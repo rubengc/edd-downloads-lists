@@ -32,7 +32,7 @@ function edd_downloads_lists_admin_scripts( $hook ) {
         //wp_enqueue_style( 'edd_plugin_name_admin_css', EDD_DOWNLOADS_LISTS_URL . '/assets/css/admin' . $suffix . '.css' );
 
         wp_localize_script( 'edd-downloads-lists-admin', 'edd_downloads_lists', array(
-                'lists'                   => edd_downloads_lists()->get_lists(),
+                'lists' => edd_downloads_lists()->get_lists(),
             )
         );
     }

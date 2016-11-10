@@ -30,23 +30,22 @@ function edd_downloads_lists_add_to_list() {
         $return = array();
 
         // Get user's list ID if already exists
-        $list_id = edd_downloads_lists_get_users_list_id( $_POST['list'] );
+        $list_id = edd_downloads_lists_get_user_list_id( $_POST['list'] );
 
         // no list
         if ( ! $list_id ) {
             // create list if it does not exist
             $list_id = edd_downloads_lists_create_list( $_POST['list'] );
 
-            // create token for logged out user
-            $token = edd_wl_create_token( $list_id );
-
             // update list ID with token
             if ( is_user_logged_in() ) {
                 $user_id = get_current_user_id();
                 // store list ID against user's profile
                 update_user_meta( $user_id, 'edd_downloads_list_' . $_POST['list'] . '_id', $list_id );
-            }
-            elseif ( ! is_user_logged_in() ) {
+            } elseif ( ! is_user_logged_in() ) {
+                // create token for logged out user
+                $token = edd_wl_create_token( $list_id );
+
                 update_post_meta( $list_id, 'edd_downloads_list_' . $_POST['list'] . '_id', $token );
             }
         }
@@ -75,7 +74,7 @@ function edd_downloads_lists_add_to_list() {
             }
 
         }
-        // ID of favorites list
+        // ID of the list
         $return['list_id'] = $list_id;
 
         echo json_encode( $return );

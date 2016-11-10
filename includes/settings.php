@@ -51,16 +51,17 @@ function edd_downloads_lists_settings( $settings ) {
             'desc'  => __( 'Configure EDD Downloads Lists', 'edd-downloads-lists' ),
             'type'  => 'header',
         ),
-        array(
-            'id'    => 'edd_downloads_list_buttons_header',
-            'name'  => '<strong>' . __( 'Buttons', 'edd-downloads-lists' ) . '</strong>',
-            'desc'  => __( 'Configure EDD Downloads Lists buttons', 'edd-downloads-lists' ),
-            'type'  => 'header',
-        ),
     );
 
     foreach( edd_downloads_lists()->get_lists() as $list => $list_args ) {
         $list_display_name = ( isset( $list_args['name'] ) ? $list_args['name'] : str_replace( '_', ' ', $list ) );
+
+        $edd_downloads_lists_settings[] = array(
+            'id'    => sprintf( 'edd_downloads_list_%s_header', $list ),
+            'name'  => '<strong>' . __( ucfirst($list_display_name), 'edd-downloads-lists' ) . '</strong>',
+            'desc'  => sprintf( __( 'Configure %s', $list_display_name), 'edd-downloads-lists' ),
+            'type'  => 'header',
+        );
 
         $edd_downloads_lists_settings[] = array(
             'id'    => sprintf( 'edd_downloads_lists_%s_link', $list ),
@@ -105,6 +106,30 @@ function edd_downloads_lists_settings( $settings ) {
             'type' => 'dropdown_pages',
         );
 
+        $edd_downloads_lists_settings[] = array(
+            'id' => sprintf( 'edd_downloads_lists_%s_guest', $list ),
+            'name' => sprintf( __( 'Allow Guests To Create %s', 'edd-downloads-lists' ), ucfirst($list_display_name) ),
+            'type' => 'select',
+            'options' =>  array(
+                'yes' =>  __( 'Yes', 'edd-downloads-lists' ),
+                'no' =>  __( 'No', 'edd-downloads-lists' ),
+            ),
+            'std' => 'yes'
+        );
+
+        $edd_downloads_lists_settings[] = array(
+            'id'    => sprintf( 'edd_downloads_lists_%s_cart', $list ),
+            'name'  => sprintf( __( 'Allow Add To Cart', 'edd-downloads-lists' ), ucfirst($list_display_name) ),
+            'desc'  => sprintf( __( 'Checking this option will add an Add To Cart button in not purchased downloads of this list', 'edd-downloads-lists' ), $list_display_name ),
+            'type'  => 'checkbox',
+        );
+
+        $edd_downloads_lists_settings[] = array(
+            'id'    => sprintf( 'edd_downloads_lists_%s_share', $list ),
+            'name'  => sprintf( __( 'Allow Share', 'edd-downloads-lists' ), ucfirst($list_display_name) ),
+            'desc'  => sprintf( __( 'Checking this option will allow user share this list', 'edd-downloads-lists' ), $list_display_name ),
+            'type'  => 'checkbox',
+        );
     }
 
     if ( version_compare( EDD_VERSION, 2.5, '>=' ) ) {

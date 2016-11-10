@@ -13,7 +13,6 @@
  * @copyright       Copyright (c) rubengc
  */
 
-
 // Exit if accessed directly
 if( !defined( 'ABSPATH' ) ) exit;
 
@@ -151,6 +150,7 @@ if( !class_exists( 'EDD_Downloads_Lists' ) ) {
                     'icon' => 'gift'
                 ),
                 'favorite' => array(
+                    'label' => __( 'Favorite', 'edd-downloads-list' ),
                     'icon' => 'star'
                 ),
                 'like' => array(
@@ -158,6 +158,23 @@ if( !class_exists( 'EDD_Downloads_Lists' ) ) {
                     'icon' => 'heart'
                 ),
             ) );
+        }
+
+        /**
+         * Get list args
+         *
+         * @access      public
+         * @since       1.0.0
+         * @return      array|boolean
+         */
+        public function get_list_args( $list ) {
+            $lists = self::$instance->get_lists();
+
+            if(isset($lists[$list])) {
+                return $lists[$list];
+            }
+
+            return false;
         }
     }
 } // End if class_exists check

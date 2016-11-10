@@ -13,5 +13,7 @@ Adding a list will, automatically add all settings in EDD Settings -> Extensions
 
 TODO:
 Support to add custom collection lists (for example the list "List") to grouping list
-Filter lists queries to hide single lists ("likes" do not appear on "List")
 Improve templating
+
+Done:
+Filter lists queries to hide single lists ("likes" do not appear on "List"): I need this PR on EDD Wish List to get it done (https://github.com/easydigitaldownloads/edd-wish-lists/pull/51)

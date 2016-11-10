@@ -3,9 +3,13 @@ jQuery(document).ready(function($) {
         $.each(edd_downloads_lists.lists, function(list, list_args) {
             var list_callback = function() {
                 var list_settings = [
-                    'edd_download_lists_' + list + '_label',
-                    'edd_download_lists_' + list + '_icon',
-                    'edd_download_lists_' + list + '_style'
+                    'edd_downloads_lists_' + list + '_label',
+                    'edd_downloads_lists_' + list + '_icon',
+                    'edd_downloads_lists_' + list + '_style',
+                    'edd_downloads_lists_' + list + '_page_view',
+                    'edd_downloads_lists_' + list + '_guest',
+                    'edd_downloads_lists_' + list + '_cart',
+                    'edd_downloads_lists_' + list + '_share'
                 ];
 
                 var show = false;
