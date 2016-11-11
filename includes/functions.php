@@ -11,26 +11,20 @@
 if( !defined( 'ABSPATH' ) ) exit;
 
 /**
- * Returns a user's favorites list ID
+ * Returns a user's list ID
  * list will be created if one does not exist
  *
- * @since  1.0
- * @param $list string User list, defaults: wish_list|favorite|like
- * @param $user_id integer (Optional) User id
- * @return integer|boolean List id
+ * @since   1.0
+ * @param   $list string        User list, defaults: wish_list|favorite|like|recommend
+ * @param   $user_id integer    (Optional) User id
+ * @return  integer|boolean     List id|false
  */
 function edd_downloads_lists_get_user_list_id( $list, $user_id = null ) {
-    // If not set $user_id then try to get list from logged user or guest
+    // If not specified $user_id then try to get list from logged user or guest
     if( $user_id == null ) {
-        // user is logged in, get ID of list
+        // user is logged in, set $user_id using current user ID
         if (is_user_logged_in()) {
             $user_id = get_current_user_id();
-
-            $user_list = get_user_meta($user_id, 'edd_downloads_list_' . $list . '_id', true);
-
-            if ('publish' == get_post_status($user_list) || 'private' == get_post_status($user_list)) {
-                $list_id = $user_list;
-            }
         }
         // user is logged out
         elseif (!is_user_logged_in()) {
@@ -51,11 +45,26 @@ function edd_downloads_lists_get_user_list_id( $list, $user_id = null ) {
             $post = get_posts($args);
             $list_id = $post ? $post[0]->ID : '';
         }
-    } else {
+    }
+
+    if( $user_id != null ) {
         $user_list = get_user_meta($user_id, 'edd_downloads_list_' . $list . '_id', true);
 
-        if ('publish' == get_post_status($user_list) || 'private' == get_post_status($user_list)) {
-            $list_id = $user_list;
+        $post = get_post($user_list);
+
+        // If exists the user list
+        if ( $post != null) {
+            if( 'publish' == $post->post_status || 'private' == $post->post_status ) {
+                $list_id = $user_list;
+            }
+        }
+        // Creates the list if does not exist
+        else {
+            $list_id = edd_downloads_lists_create_list( $list );
+
+            if( $list_id ) {
+                update_user_meta($user_id, 'edd_downloads_list_' . $list . '_id', $list_id);
+            }
         }
     }
 
@@ -65,21 +74,70 @@ function edd_downloads_lists_get_user_list_id( $list, $user_id = null ) {
 }
 
 /**
+ * Gets the downloads of a specific list
+ *
+ * @param  string $list 	    User list, defaults: wish_list|favorite|like|recommend
+ * @param  integer $user_id     (Optional) User id
+ * @return array|boolean        Contents of the list|false
+ * @since  1.0
+ */
+function edd_downloads_lists_get_downloads_list( $list, $user_id = null ) {
+    $list_id = edd_downloads_lists_get_user_list_id( $list, $user_id );
+
+    if( $list_id ) {
+        return edd_wl_get_wish_list($list_id);
+    }
+
+    return false;
+}
+
+function edd_downloads_lists_get_download_list_count( $list, $download_id = null ) {
+    if ( $download_id == null ) {
+        $download_id = get_the_ID();
+    }
+
+    if ( '' == get_post_meta( $download_id, sprintf( 'edd_downloads_lists_%s_count', $list), true ) ) {
+        add_post_meta( $download_id, sprintf( 'edd_downloads_lists_%s_count', $list), 0 );
+    }
+
+    $count = get_post_meta( $download_id, sprintf( 'edd_downloads_lists_%s_count', $list), true );
+
+    // Never let this be less than zero
+    return max( $count, 0 );
+}
+
+function edd_downloads_lists_increase_download_list_count( $list, $quantity = 1, $download_id = null ) {
+    if ( $download_id == null ) {
+        $download_id = get_the_ID();
+    }
+
+    $quantity = absint( $quantity );
+    $count    = edd_downloads_lists_get_download_list_count( $list, $download_id ) + $quantity;
+
+    return update_post_meta( $download_id, sprintf( 'edd_downloads_lists_%s_count', $list), $count );
+}
+
+function edd_downloads_lists_decrease_download_list_count( $list, $quantity = 1, $download_id = null ) {
+    if ( $download_id == null ) {
+        $download_id = get_the_ID();
+    }
+
+    $quantity = absint( $quantity );
+    $count    = edd_downloads_lists_get_download_list_count( $list, $download_id ) - $quantity;
+
+    return update_post_meta( $download_id, sprintf( 'edd_downloads_lists_%s_count', $list), $count );
+}
+
+/**
  * Create a list
+ * @param $list string List identifier
  * @return integer|boolean List id
  */
 function edd_downloads_lists_create_list( $list ) {
-    $default_title = __( 'List', 'edd-downloads-list' );
-    $default_status = 'publish';
+    $list_args = edd_downloads_lists()->get_list_args( $list );
 
-    if($list == 'wish_list') {
-        $default_title = __( 'Wishes', 'edd-downloads-list' );
-        $default_status = 'private';
-    } else if($list == 'favorite') {
-        $default_title = __( 'Favorites', 'edd-downloads-list' );
-    } else if($list == 'like') {
-        $default_title = __( 'Likes', 'edd-downloads-list' );
-    }
+    $default_title = isset($list_args['plural']) ? $list_args['plural'] : __( 'List', 'edd-downloads-list' );
+    $default_status = isset($list_args['post_status']) ? $list_args['post_status'] : 'publish';
 
     $args = array(
         'post_title'    => apply_filters( 'edd_downloads_lists_post_title', $default_title ),

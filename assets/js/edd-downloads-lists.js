@@ -58,6 +58,10 @@ jQuery(document).ready(function ($) {
                         $( linkClicked ).addClass( cssClass );
                     }
 
+                    if ( response.label !== undefined ) {
+                        $(linkClicked).find('.label').text(response.label);
+                    }
+
                 }
             })
             .fail(function (response) {

@@ -5,6 +5,7 @@ jQuery(document).ready(function($) {
                 var list_settings = [
                     'edd_downloads_lists_' + list + '_label',
                     'edd_downloads_lists_' + list + '_icon',
+                    'edd_downloads_lists_' + list + '_count',
                     'edd_downloads_lists_' + list + '_style',
                     'edd_downloads_lists_' + list + '_page_view',
                     'edd_downloads_lists_' + list + '_guest',

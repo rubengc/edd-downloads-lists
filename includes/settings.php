@@ -54,19 +54,20 @@ function edd_downloads_lists_settings( $settings ) {
     );
 
     foreach( edd_downloads_lists()->get_lists() as $list => $list_args ) {
-        $list_display_name = ( isset( $list_args['name'] ) ? $list_args['name'] : str_replace( '_', ' ', $list ) );
+        $list_singular = ( isset( $list_args['singular'] ) ? $list_args['singular'] : str_replace( '_', ' ', $list ) );
+        $list_plural = ( isset( $list_args['plural'] ) ? $list_args['plural'] : str_replace( '_', ' ', $list ) );
 
         $edd_downloads_lists_settings[] = array(
             'id'    => sprintf( 'edd_downloads_list_%s_header', $list ),
-            'name'  => '<strong>' . __( ucfirst($list_display_name), 'edd-downloads-lists' ) . '</strong>',
-            'desc'  => sprintf( __( 'Configure %s', $list_display_name), 'edd-downloads-lists' ),
+            'name'  => '<strong>' . __( $list_singular, 'edd-downloads-lists' ) . '</strong>',
+            'desc'  => sprintf( __( 'Configure %s', $list_plural), 'edd-downloads-lists' ),
             'type'  => 'header',
         );
 
         $edd_downloads_lists_settings[] = array(
             'id'    => sprintf( 'edd_downloads_lists_%s_link', $list ),
-            'name'  => sprintf( __( 'Enable %s', 'edd-downloads-lists' ), ucfirst($list_display_name) ),
-            'desc'  => sprintf( __( 'Checking this option will add a link to add a download to %s', 'edd-downloads-lists' ), $list_display_name ),
+            'name'  => sprintf( __( 'Enable %s', 'edd-downloads-lists' ), $list_plural ),
+            'desc'  => sprintf( __( 'Checking this option will add a link to add a download to %s', 'edd-downloads-lists' ), $list_singular ),
             'type'  => 'checkbox',
         );
 
@@ -75,13 +76,20 @@ function edd_downloads_lists_settings( $settings ) {
             'name'  => __( 'Label', 'edd-downloads-lists' ),
             'desc'  => '<p class="description">' . __( 'Enter the text you\'d like to appear for adding a download to %s', 'edd-downloads-lists' ) . '</p>',
             'type'  => 'text',
-            'std' => ( isset( $list_args['label'] ) ? $list_args['label'] : sprintf( __( 'Add to %s', 'edd-downloads-lists' ), $list_display_name ) )
+            'std' => ( isset( $list_args['label'] ) ? $list_args['label'] : sprintf( __( 'Add to %s', 'edd-downloads-lists' ), $list_singular ) )
+        );
+
+        $edd_downloads_lists_settings[] = array(
+            'id'    => sprintf( 'edd_downloads_lists_%s_count', $list ),
+            'name'  => __( 'Count', 'edd-downloads-lists' ),
+            'desc'  => '<p class="description">' . __( 'Checking this option will show a count of times that this download has been added to this type of list instead of the label', 'edd-downloads-lists' ) . '</p>',
+            'type'  => 'checkbox',
         );
 
         $edd_downloads_lists_settings[] = array(
             'id' => sprintf( 'edd_downloads_lists_%s_icon', $list ),
             'name' => __( 'Icon', 'edd-downloads-lists' ),
-            'desc' => '<p class="description">' . sprintf( __( 'The icon to show next to the add to %s links', 'edd-wish-lists' ), $list_display_name ) . '</p>',
+            'desc' => '<p class="description">' . sprintf( __( 'The icon to show next to the add to %s links', 'edd-wish-lists' ), $list_plural ) . '</p>',
             'type' => 'select',
             'options' =>  $icons,
             'std' => ( isset( $list_args['icon'] ) ? $list_args['icon'] : 'add' )
@@ -102,13 +110,13 @@ function edd_downloads_lists_settings( $settings ) {
         $edd_downloads_lists_settings[] = array(
             'id' => sprintf( 'edd_downloads_lists_%s_page_view', $list ),
             'name' => __( 'View Page', 'edd-downloads-lists' ),
-            'desc' => '<p class="description">' . sprintf( __( 'Select the page where users will view their %s. This page should include the [edd_downloads_lists list="%s"] shortcode', 'edd-wish-lists' ), $list_display_name, $list ) . '</p>',
+            'desc' => '<p class="description">' . sprintf( __( 'Select the page where users will view their %s. This page should include the [edd_downloads_lists list="%s"] shortcode', 'edd-wish-lists' ), $list_singular, $list ) . '</p>',
             'type' => 'dropdown_pages',
         );
 
         $edd_downloads_lists_settings[] = array(
             'id' => sprintf( 'edd_downloads_lists_%s_guest', $list ),
-            'name' => sprintf( __( 'Allow Guests To Create %s', 'edd-downloads-lists' ), ucfirst($list_display_name) ),
+            'name' => sprintf( __( 'Allow Guests To Create %s', 'edd-downloads-lists' ), $list_singular ),
             'type' => 'select',
             'options' =>  array(
                 'yes' =>  __( 'Yes', 'edd-downloads-lists' ),
@@ -119,15 +127,15 @@ function edd_downloads_lists_settings( $settings ) {
 
         $edd_downloads_lists_settings[] = array(
             'id'    => sprintf( 'edd_downloads_lists_%s_cart', $list ),
-            'name'  => sprintf( __( 'Allow Add To Cart', 'edd-downloads-lists' ), ucfirst($list_display_name) ),
-            'desc'  => sprintf( __( 'Checking this option will add an Add To Cart button in not purchased downloads of this list', 'edd-downloads-lists' ), $list_display_name ),
+            'name'  => __( 'Allow Add To Cart', 'edd-downloads-lists' ),
+            'desc'  => __( 'Checking this option will add an Add To Cart button in not purchased downloads of this list', 'edd-downloads-lists' ),
             'type'  => 'checkbox',
         );
 
         $edd_downloads_lists_settings[] = array(
             'id'    => sprintf( 'edd_downloads_lists_%s_share', $list ),
-            'name'  => sprintf( __( 'Allow Share', 'edd-downloads-lists' ), ucfirst($list_display_name) ),
-            'desc'  => sprintf( __( 'Checking this option will allow user share this list', 'edd-downloads-lists' ), $list_display_name ),
+            'name'  => __( 'Allow Share', 'edd-downloads-lists' ),
+            'desc'  => __( 'Checking this option will allow user share this list', 'edd-downloads-lists' ),
             'type'  => 'checkbox',
         );
     }

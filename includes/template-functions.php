@@ -15,6 +15,9 @@ if( !defined( 'ABSPATH' ) ) exit;
  *
  * Note: This function does not detects if button is enabled, to check it manually use:
  * edd_get_option( sprintf( 'edd_downloads_lists_%s_link', $list ), false )
+ *
+ * @param $list string User list, defaults: wish_list|favorite|like|recommend
+ * @param $download_id integer (Optional) The download ID
  */
 function edd_downloads_lists_link( $list, $download_id = null ) {
     if ( $download_id == null ) {
@@ -28,9 +31,8 @@ function edd_downloads_lists_link( $list, $download_id = null ) {
     $list_args = edd_downloads_lists()->get_list_args( $list );
 
     if( $list_args ) {
-        $list_display_name = ( isset( $list_args['name'] ) ? $list_args['name'] : $list );
-        $is_multiple = ( isset($list_args['multiple']) && $list_args['multiple'] );
-        $default_label = ( isset( $list_args['label'] ) ? $list_args['label'] : sprintf( __( 'Add to %s', 'edd-downloads-lists' ), $list_display_name ) );
+        $list_singular = ( isset( $list_args['singular'] ) ? $list_args['singular'] : $list );
+        $default_label = ( isset( $list_args['label'] ) ? $list_args['label'] : sprintf( __( 'Add to %s', 'edd-downloads-lists' ), $list_singular ) );
 
         $classes = array();
         // assign a class to the link depending on where it's hooked to
@@ -45,27 +47,29 @@ function edd_downloads_lists_link( $list, $download_id = null ) {
         // default classes
         $classes[] = 'edd-wl-action';
         $classes[] = 'list-' . $list;
+        $classes[] = 'edd-downloads-lists-add';
 
-        if( $is_multiple ) {
-            $classes[] = 'edd-wl-open-modal';
-        } else {
-            $classes[] = 'edd-downloads-lists-add';
+        $list_id = edd_downloads_lists_get_user_list_id( $list );
 
-            $list_id = edd_downloads_lists_get_user_list_id( $list );
+        // Adds the listed CSS class if the list exists
+        if ( $list_id && edd_wl_item_in_wish_list( $download_id, null, $list_id ) ) {
+            $classes[] = 'listed';
+        }
 
-            // Adds the listed CSS class if the list exists
-            if ( $list_id && edd_wl_item_in_wish_list( $download_id, null, $list_id ) ) {
-                $classes[] = 'listed';
-            }
+        $label = edd_get_option( sprintf( 'edd_downloads_lists_%s_label', $list ), $default_label );
+
+        if( edd_get_option( sprintf( 'edd_downloads_lists_%s_count', $list ), false ) ) {
+            // Adds an extra space because edd_wl_wish_list_link() checks if this variable and if this is '0' or 0 does not shows it
+            $label = edd_downloads_lists_get_download_list_count( $list, $download_id ) . ' ';
         }
 
         $args = array(
             'download_id'	=> $download_id,
             'link'		    => '#' . $list,
-            'action'		=> (( $is_multiple ) ? 'edd_wl_open_modal' : 'edd_downloads_lists_add_to_list' ),
+            'action'		=> 'edd_downloads_lists_add_to_list',
             'class'			=> implode( ' ', $classes ),
             'link_size'		=> apply_filters( 'edd_downloads_lists_link_size', '' ),
-            'text'        	=> edd_get_option( sprintf( 'edd_downloads_lists_%s_label', $list ), $default_label ),
+            'text'        	=> $label,
             'icon'			=> edd_get_option( sprintf( 'edd_downloads_lists_%s_icon', $list ), 'add' ),
             'style'       	=> edd_get_option( sprintf( 'edd_downloads_lists_%s_style', $list ), 'button' ),
         );
@@ -91,9 +95,8 @@ function edd_downloads_lists_links( $download_id = null ) {
                 return;
             }
 
-            $list_display_name = ( isset( $list_args['name'] ) ? $list_args['name'] : $list );
-            $is_multiple = ( isset($list_args['multiple']) && $list_args['multiple'] );
-            $default_label = ( isset( $list_args['label'] ) ? $list_args['label'] : sprintf( __( 'Add to %s', 'edd-downloads-lists' ), $list_display_name ) );
+            $list_singular = ( isset( $list_args['singular'] ) ? $list_args['singular'] : $list );
+            $default_label = ( isset( $list_args['label'] ) ? $list_args['label'] : sprintf( __( 'Add to %s', 'edd-downloads-lists' ), $list_singular ) );
 
             $classes = array();
             // assign a class to the link depending on where it's hooked to
@@ -108,27 +111,30 @@ function edd_downloads_lists_links( $download_id = null ) {
             // default classes
             $classes[] = 'edd-wl-action';
 
-            if( $is_multiple ) {
-                $classes[] = 'edd-wl-open-modal';
-            } else {
-                $classes[] = 'edd-downloads-lists-add';
-                $classes[] = 'list-' . $list;
+            $classes[] = 'edd-downloads-lists-add';
+            $classes[] = 'list-' . $list;
 
-                $list_id = edd_downloads_lists_get_user_list_id( $list );
+            $list_id = edd_downloads_lists_get_user_list_id( $list );
 
-                // Adds the listed CSS class if the list exists
-                if ( $list_id && edd_wl_item_in_wish_list( $download_id, null, $list_id ) ) {
-                    $classes[] = 'listed';
-                }
+            // Adds the listed CSS class if the list exists
+            if ( $list_id && edd_wl_item_in_wish_list( $download_id, null, $list_id ) ) {
+                $classes[] = 'listed';
+            }
+
+            $label = edd_get_option( sprintf( 'edd_downloads_lists_%s_label', $list ), $default_label );
+
+            if( edd_get_option( sprintf( 'edd_downloads_lists_%s_count', $list ), false ) ) {
+                // Adds an extra space because edd_wl_wish_list_link() checks if this variable and if this is '0' or 0 does not shows it
+                $label = edd_downloads_lists_get_download_list_count( $list, $download_id ) . ' ';
             }
 
             $args = array(
                 'download_id'	=> $download_id,
                 'link'		    => '#' . $list,
-                'action'		=> (( $is_multiple ) ? 'edd_wl_open_modal' : 'edd_downloads_lists_add_to_list' ),
+                'action'		=> 'edd_downloads_lists_add_to_list',
                 'class'			=> implode( ' ', $classes ),
                 'link_size'		=> apply_filters( 'edd_downloads_lists_link_size', '' ),
-                'text'        	=> edd_get_option( sprintf( 'edd_downloads_lists_%s_label', $list ), $default_label ),
+                'text'        	=> $label,
                 'icon'			=> edd_get_option( sprintf( 'edd_downloads_lists_%s_icon', $list ), 'add' ),
                 'style'       	=> edd_get_option( sprintf( 'edd_downloads_lists_%s_style', $list ), 'button' ),
             );
@@ -139,19 +145,7 @@ function edd_downloads_lists_links( $download_id = null ) {
         }
     }
 }
-add_action( 'edd_purchase_link_top', 'edd_downloads_lists_links' );
-
-/**
- * Removes standard wish list and favorite links
- */
-function edd_downloads_lists_links_hooks() {
-    // Removes default add to wish list link
-    remove_action( 'edd_purchase_link_top', 'edd_wl_load_wish_list_link' );
-
-    // Removes default add to favorite link
-    remove_action( 'edd_purchase_link_top', 'edd_favorite_load_link' );
-}
-add_action( 'template_redirect', 'edd_downloads_lists_links_hooks', 11 );
+add_action( 'edd_purchase_link_top', 'edd_downloads_lists_links', 11 );
 
 /**
  * Set the 'view' and 'edit' query var on the current list page
@@ -162,11 +156,6 @@ function edd_downloads_lists_set_query_var() {
     if ( $list = edd_downloads_lists_is_page_view() ) {
         set_query_var( 'wl_view', edd_downloads_lists_get_user_list_id( $list ) );
     }
-
-    // TODO: Allow edit list settings
-    /*if ( $list ) {
-        set_query_var( 'wl_edit', edd_downloads_lists_get_users_list_id( $list ) );
-    }*/
 }
 add_action( 'template_redirect', 'edd_downloads_lists_set_query_var', 9 ); // runs just before edd_wl_process_form_requests() so it can pick up the correct query_var
 
@@ -179,12 +168,10 @@ function edd_downloads_lists_query_args( $query ) {
     $not_in = array();
 
     foreach(edd_downloads_lists()->get_lists() as $list => $list_args) {
-        if( ! isset( $list_args['multiple'] ) ) {
-            $list_id = edd_downloads_lists_get_user_list_id( $list );
+        $list_id = edd_downloads_lists_get_user_list_id( $list );
 
-            if( $list_id ) {
-                $not_in[] = $list_id;
-            }
+        if( $list_id ) {
+            $not_in[] = $list_id;
         }
     }
 
@@ -194,7 +181,7 @@ function edd_downloads_lists_query_args( $query ) {
 
     return $query;
 }
-add_filter( 'edd_wl_query_args', 'edd_downloads_lists_query_args' ); // TODO: Needs PR merged on edd wish list repository
+add_filter( 'edd_wl_query_args', 'edd_downloads_lists_query_args' );
 
 /**
  * Hides add to cart button if is setting
@@ -251,7 +238,7 @@ add_filter( 'edd_wl_display_sharing', 'edd_downloads_lists_display_sharing' );
  */
 function edd_downloads_lists_edit_settings_link( $show ) {
     if ( $list = edd_downloads_lists_is_page_view() ) {
-        return false;
+        return 'none';
     }
 
     return $show;

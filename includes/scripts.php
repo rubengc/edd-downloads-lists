@@ -29,7 +29,6 @@ function edd_downloads_lists_admin_scripts( $hook ) {
 
     if( $hook == $edd_settings_page && $section == 'edd-downloads-lists' ) {
         wp_enqueue_script( 'edd-downloads-lists-admin', EDD_DOWNLOADS_LISTS_URL . '/assets/js/admin' . $suffix . '.js', array( 'jquery' ) );
-        //wp_enqueue_style( 'edd_plugin_name_admin_css', EDD_DOWNLOADS_LISTS_URL . '/assets/css/admin' . $suffix . '.css' );
 
         wp_localize_script( 'edd-downloads-lists-admin', 'edd_downloads_lists', array(
                 'lists' => edd_downloads_lists()->get_lists(),

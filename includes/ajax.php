@@ -61,6 +61,10 @@ function edd_downloads_lists_add_to_list() {
                 $position = edd_wl_get_item_position_in_list( $_POST['download_id'], $list_id, $options );
 
                 edd_remove_from_wish_list( $position, $list_id );
+
+                // Updates a meta with total count on this list
+                edd_downloads_lists_decrease_download_list_count( $_POST['list'], 1, $_POST['download_id'] );
+
                 $return['removed'] = true;
                 $return['removed_from'] = $list_id;
                 $return['position'] = $position;
@@ -69,6 +73,9 @@ function edd_downloads_lists_add_to_list() {
             else {
                 edd_wl_add_to_wish_list( $_POST['download_id'], $options, $list_id );
 
+                // Updates a meta with total count on this list
+                edd_downloads_lists_increase_download_list_count( $_POST['list'], 1, $_POST['download_id'] );
+
                 $return['added'] = true;
                 $return['added_to'] = $list_id;
             }
@@ -76,6 +83,17 @@ function edd_downloads_lists_add_to_list() {
         }
         // ID of the list
         $return['list_id'] = $list_id;
+
+        // Updates the link label
+        $list_singular = ( isset( $list_args['singular'] ) ? $list_args['singular'] : $_POST['list'] );
+        $default_label = ( isset( $list_args['label'] ) ? $list_args['label'] : sprintf( __( 'Add to %s', 'edd-downloads-lists' ), $list_singular ) );
+        $label = edd_get_option( sprintf( 'edd_downloads_lists_%s_label', $_POST['list'] ), $default_label );
+
+        if( edd_get_option( sprintf( 'edd_downloads_lists_%s_count', $_POST['list'] ), false ) ) {
+            $label = edd_downloads_lists_get_download_list_count( $_POST['list'], $_POST['download_id'] );
+        }
+
+        $return['label'] = $label;
 
         echo json_encode( $return );
     }

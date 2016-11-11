@@ -1,8 +1,8 @@
 <?php
 /**
  * Plugin Name:     EDD Downloads List
- * Plugin URI:      @todo
- * Description:     In development
+ * Plugin URI:      https://wordpress.org/plugins/edd-downloads-lists/
+ * Description:     Adds custom lists to EDD Wish Lists
  * Version:         1.0.0
  * Author:          rubengc
  * Author URI:      http://rubengc.com
@@ -12,6 +12,7 @@
  * @author          rubengc
  * @copyright       Copyright (c) rubengc
  */
+
 
 // Exit if accessed directly
 if( !defined( 'ABSPATH' ) ) exit;
@@ -134,7 +135,7 @@ if( !class_exists( 'EDD_Downloads_Lists' ) ) {
 
         /**
          * Lists to use
-         * Default: list, wish_list, favorite, like
+         * Default: wish_list, favorite, like, recommend
          *
          * @access      public
          * @since       1.0.0
@@ -142,20 +143,29 @@ if( !class_exists( 'EDD_Downloads_Lists' ) ) {
          */
         public function get_lists() {
             return apply_filters( 'edd_downloads_lists_registered_lists', array(
-                'list' => array(
-                    'icon' => 'add',
-                    'multiple' => true, // Manages multiple lists
-                ),
-                'wish_list' => array(
+                'wish' => array(
+                    'singular' => 'Wish',
+                    'plural' => 'Wishes',
+                    'post_status' => 'private',
                     'icon' => 'gift'
                 ),
                 'favorite' => array(
+                    'singular' => 'Favorite',
+                    'plural' => 'Favorites',
                     'label' => __( 'Favorite', 'edd-downloads-list' ),
                     'icon' => 'star'
                 ),
                 'like' => array(
+                    'singular' => 'Like',
+                    'plural' => 'Likes',
                     'label' => __( 'Like', 'edd-downloads-list' ),
                     'icon' => 'heart'
+                ),
+                'recommend' => array(
+                    'singular' => 'Recommend',
+                    'plural' => 'Recommendations',
+                    'label' => __( 'Recommend', 'edd-downloads-list' ),
+                    'icon' => 'add'
                 ),
             ) );
         }
@@ -165,6 +175,7 @@ if( !class_exists( 'EDD_Downloads_Lists' ) ) {
          *
          * @access      public
          * @since       1.0.0
+         * @param       $list string
          * @return      array|boolean
          */
         public function get_list_args( $list ) {
