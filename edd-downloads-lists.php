@@ -86,6 +86,8 @@ if( !class_exists( 'EDD_Downloads_Lists' ) ) {
             require_once EDD_DOWNLOADS_LISTS_DIR . 'includes/settings.php';
             require_once EDD_DOWNLOADS_LISTS_DIR . 'includes/shortcodes.php';
             require_once EDD_DOWNLOADS_LISTS_DIR . 'includes/template-functions.php';
+
+            require_once EDD_DOWNLOADS_LISTS_DIR . 'widgets/edd-downloads-lists-widget.php';
         }
 
 

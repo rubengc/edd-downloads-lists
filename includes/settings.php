@@ -46,7 +46,7 @@ function edd_downloads_lists_settings( $settings ) {
 
     $edd_downloads_lists_settings = array(
         array(
-            'id'    => 'edd_downloads_list_header',
+            'id'    => 'edd_downloads_lists_header',
             'name'  => '<strong>' . __( 'EDD Downloads Lists', 'edd-downloads-lists' ) . '</strong>',
             'desc'  => __( 'Configure EDD Downloads Lists', 'edd-downloads-lists' ),
             'type'  => 'header',
@@ -58,7 +58,7 @@ function edd_downloads_lists_settings( $settings ) {
         $list_plural = ( isset( $list_args['plural'] ) ? $list_args['plural'] : str_replace( '_', ' ', $list ) );
 
         $edd_downloads_lists_settings[] = array(
-            'id'    => sprintf( 'edd_downloads_list_%s_header', $list ),
+            'id'    => sprintf( 'edd_downloads_lists_%s_header', $list ),
             'name'  => '<strong>' . __( $list_singular, 'edd-downloads-lists' ) . '</strong>',
             'desc'  => sprintf( __( 'Configure %s', $list_plural), 'edd-downloads-lists' ),
             'type'  => 'header',
@@ -138,6 +138,19 @@ function edd_downloads_lists_settings( $settings ) {
             'desc'  => __( 'Checking this option will allow user share this list', 'edd-downloads-lists' ),
             'type'  => 'checkbox',
         );
+
+        if($list == 'favorite') {
+            $edd_downloads_lists_settings[] = array(
+                'id' => sprintf('edd_downloads_lists_%s_button', $list),
+                'name' => __('Import from EDD Favorites', 'edd-downloads-lists'),
+                'desc' => __('<p class="description">If you want to move EDD Favorites lists to EDD Downloads Lists click button bellow to update user favorite lists (EDD Favorites data not will lost)</p>', 'edd-downloads-lists') .
+                    '<button type="button" id="edd_downloads_lists_favorites_import_button" class="button">' . __( 'Import from EDD Favorites', 'edd-downloads-lists') . '</button>' .
+                    '<span id="edd_downloads_lists_favorites_import_button_spinner" class="spinner" style="float: none;"></span>' .
+                    '<div id="edd_downloads_lists_favorites_import_response"></div>'
+                    ,
+                'type' => 'descriptive_text',
+            );
+        }
     }
 
     if ( version_compare( EDD_VERSION, 2.5, '>=' ) ) {

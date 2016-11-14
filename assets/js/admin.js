@@ -35,4 +35,31 @@ jQuery(document).ready(function($) {
             $('[id*="edd_downloads_lists_' + list + '_link"]').change(list_callback);
         });
     }
+
+    $('#edd_downloads_lists_favorites_import_button').click(function(e) {
+        e.preventDefault();
+
+        var button = $(this);
+
+        button.addClass('disabled');
+        button.attr('disabled', 'disabled');
+        button.next('.spinner').addClass('is-active');
+        $('#edd_downloads_lists_favorites_import_response').text('');
+
+        $.ajax({
+            url: ajaxurl,
+            dataType: 'json',
+            data: {
+                action: 'edd_downloads_lists_favorites_import'
+            },
+            success: function(response) {
+                // console.log(response); // Uncomment to see users updated
+
+                button.removeClass('disabled');
+                button.removeAttr('disabled');
+                button.next('.spinner').removeClass('is-active');
+                $('#edd_downloads_lists_favorites_import_response').text(response.message);
+            }
+        });
+    });
 });

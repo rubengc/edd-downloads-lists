@@ -38,7 +38,7 @@ function edd_downloads_lists_get_user_list_id( $list, $user_id = null ) {
                 'post_type' => 'edd_wish_list',
                 'posts_per_page' => '-1',
                 'post_status' => array('publish', 'private'),
-                'meta_key' => 'edd_downloads_list_' . $list . '_id',
+                'meta_key' => 'edd_downloads_lists_' . $list . '_id',
                 'meta_value' => edd_wl_get_list_token()
             );
 
@@ -48,7 +48,7 @@ function edd_downloads_lists_get_user_list_id( $list, $user_id = null ) {
     }
 
     if( $user_id != null ) {
-        $user_list = get_user_meta($user_id, 'edd_downloads_list_' . $list . '_id', true);
+        $user_list = get_user_meta($user_id, 'edd_downloads_lists_' . $list . '_id', true);
 
         $post = get_post($user_list);
 
@@ -63,7 +63,7 @@ function edd_downloads_lists_get_user_list_id( $list, $user_id = null ) {
             $list_id = edd_downloads_lists_create_list( $list );
 
             if( $list_id ) {
-                update_user_meta($user_id, 'edd_downloads_list_' . $list . '_id', $list_id);
+                update_user_meta($user_id, 'edd_downloads_lists_' . $list . '_id', $list_id);
             }
         }
     }

@@ -1,7 +1,7 @@
 === EDD Downloads Lists ===
 Contributors: rubengc
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=64N6CERD8LPZN
-Tags: easy digital downloads, digital, download, downloads, edd, rubengc, list, lists, wish, like, favorite, recommend, e-commerce
+Tags: easy digital downloads, digital, download, downloads, edd, rubengc, list, lists, wish, like, favorite, recommend, wishes, likes, favorites, recommendations, recommendation, widget, widgets, e-commerce
 Requires at least: 4.0
 Tested up to: 4.6
 Stable tag: 1.0.0
@@ -34,6 +34,8 @@ You can enable any list at any moment. When you enable a list, you will be able 
 1. Guest: Allow guest to create this type of lists
 1. Cart: Show/Hide an add to cart button on this type of lists
 1. Share: Show/Hide share options on this type of lists
+
+Also includes a widget to render enabled list buttons on Download's sidebar.
 
 For developers, read the FAQ section to learn how to add or modify default lists.
 
