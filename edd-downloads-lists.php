@@ -46,7 +46,6 @@ if( !class_exists( 'EDD_Downloads_Lists' ) ) {
                 self::$instance->setup_constants();
                 self::$instance->includes();
                 self::$instance->load_textdomain();
-                self::$instance->hooks();
             }
 
             return self::$instance;
@@ -82,24 +81,13 @@ if( !class_exists( 'EDD_Downloads_Lists' ) ) {
         private function includes() {
             require_once EDD_DOWNLOADS_LISTS_DIR . 'includes/ajax.php';
             require_once EDD_DOWNLOADS_LISTS_DIR . 'includes/functions.php';
+            require_once EDD_DOWNLOADS_LISTS_DIR . 'includes/hooks.php';
             require_once EDD_DOWNLOADS_LISTS_DIR . 'includes/scripts.php';
             require_once EDD_DOWNLOADS_LISTS_DIR . 'includes/settings.php';
             require_once EDD_DOWNLOADS_LISTS_DIR . 'includes/shortcodes.php';
             require_once EDD_DOWNLOADS_LISTS_DIR . 'includes/template-functions.php';
 
-            require_once EDD_DOWNLOADS_LISTS_DIR . 'widgets/edd-downloads-lists-widget.php';
-        }
-
-
-        /**
-         * Run action and filter hooks
-         *
-         * @access      private
-         * @since       1.0.0
-         * @return      void
-         */
-        private function hooks() {
-
+            require_once EDD_DOWNLOADS_LISTS_DIR . 'widgets/edd-downloads-lists-links-widget.php';
         }
 
 

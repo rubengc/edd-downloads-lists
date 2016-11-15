@@ -100,7 +100,7 @@ function edd_downloads_lists_get_download_list_count( $list, $download_id = null
         add_post_meta( $download_id, sprintf( 'edd_downloads_lists_%s_count', $list), 0 );
     }
 
-    $count = get_post_meta( $download_id, sprintf( 'edd_downloads_lists_%s_count', $list), true );
+    $count = get_post_meta( $download_id, sprintf( 'edd_downloads_lists_%s_count', $list ), true );
 
     // Never let this be less than zero
     return max( $count, 0 );
@@ -114,7 +114,7 @@ function edd_downloads_lists_increase_download_list_count( $list, $quantity = 1,
     $quantity = absint( $quantity );
     $count    = edd_downloads_lists_get_download_list_count( $list, $download_id ) + $quantity;
 
-    return update_post_meta( $download_id, sprintf( 'edd_downloads_lists_%s_count', $list), $count );
+    return update_post_meta( $download_id, sprintf( 'edd_downloads_lists_%s_count', $list ), $count );
 }
 
 function edd_downloads_lists_decrease_download_list_count( $list, $quantity = 1, $download_id = null ) {
@@ -125,7 +125,7 @@ function edd_downloads_lists_decrease_download_list_count( $list, $quantity = 1,
     $quantity = absint( $quantity );
     $count    = edd_downloads_lists_get_download_list_count( $list, $download_id ) - $quantity;
 
-    return update_post_meta( $download_id, sprintf( 'edd_downloads_lists_%s_count', $list), $count );
+    return update_post_meta( $download_id, sprintf( 'edd_downloads_lists_%s_count', $list ), $count );
 }
 
 /**
