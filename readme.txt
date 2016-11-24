@@ -11,7 +11,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Adds custom lists to EDD Wish Lists
 
 == Description ==
-This plugin requires [Easy Digital Downloads](http://wordpress.org/extend/plugins/easy-digital-downloads/ "Easy Digital Downloads").
+This plugin requires [Easy Digital Downloads](http://wordpress.org/extend/plugins/easy-digital-downloads/ "Easy Digital Downloads") and [EDD Wish Lists](https://easydigitaldownloads.com/downloads/edd-wish-lists/).
 
 Once activated, EDD Downloads Lists will allow you add a separated user downloads list.
 
@@ -73,9 +73,13 @@ $list = array(
 
 == Screenshots ==
 
-1. Screenshot from downloads shortcode
+1. Screenshot from downloads settings screen
 
-2. Screenshot from 'Likes' view page
+2. Screenshot from downloads settings screen (Settings for a button)
+
+3. Screenshot from front end (Theme: vendd)
+
+4. Screenshot from front end after add to list (Theme: vendd)
 
 == Upgrade Notice ==
 

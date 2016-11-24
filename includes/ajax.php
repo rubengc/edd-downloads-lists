@@ -72,6 +72,8 @@ function edd_downloads_lists_add_to_list() {
             else {
                 edd_wl_add_to_wish_list( $_POST['download_id'], $options, $list_id );
 
+                do_action( 'edd_downloads_list_add_to_list', $list_id, $_POST['download_id'], $options, $_POST['list'] );
+
                 // Updates a meta with total count on this list
                 edd_downloads_lists_increase_download_list_count( $_POST['list'], 1, $_POST['download_id'] );
 
