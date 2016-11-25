@@ -160,30 +160,6 @@ function edd_downloads_lists_set_query_var() {
 add_action( 'template_redirect', 'edd_downloads_lists_set_query_var', 9 ); // runs just before edd_wl_process_form_requests() so it can pick up the correct query_var
 
 /**
- * Hides user lists on [edd_wish_lists]
- *
- * @since  1.0
- */
-function edd_downloads_lists_query_args( $query ) {
-    $not_in = array();
-
-    foreach(edd_downloads_lists()->get_lists() as $list => $list_args) {
-        $list_id = edd_downloads_lists_get_user_list_id( $list );
-
-        if( $list_id ) {
-            $not_in[] = $list_id;
-        }
-    }
-
-    if( !empty( $not_in ) ) {
-        $query['post__not_in'] = $not_in;
-    }
-
-    return $query;
-}
-add_filter( 'edd_wl_query_args', 'edd_downloads_lists_query_args' );
-
-/**
  * Hides add to cart button if is setting
  *
  * @since  1.0

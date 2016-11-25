@@ -25,3 +25,27 @@ function edd_downloads_lists_approve_download_excluded_metas( $excluded_metas ) 
     return $excluded_metas;
 }
 add_filter( 'edd_fes_draft_approve_download_excluded_metas', 'edd_downloads_lists_approve_download_excluded_metas' );
+
+/**
+ * Hides user lists on [edd_wish_lists]
+ *
+ * @since  1.0
+ */
+function edd_downloads_lists_query_args( $query ) {
+    $not_in = array();
+
+    foreach(edd_downloads_lists()->get_lists() as $list => $list_args) {
+        $list_id = edd_downloads_lists_get_user_list_id( $list );
+
+        if( $list_id ) {
+            $not_in[] = $list_id;
+        }
+    }
+
+    if( !empty( $not_in ) ) {
+        $query['post__not_in'] = $not_in;
+    }
+
+    return $query;
+}
+add_filter( 'edd_wl_query_args', 'edd_downloads_lists_query_args' );
