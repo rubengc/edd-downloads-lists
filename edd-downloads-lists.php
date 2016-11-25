@@ -161,6 +161,25 @@ if( !class_exists( 'EDD_Downloads_Lists' ) ) {
         }
 
         /**
+         * Returns activated lists
+         *
+         * @access      public
+         * @since       1.0.0
+         * @return      array
+         */
+        public function get_available_lists() {
+            $lists = self::get_lists();
+
+            foreach( $lists as $list => $list_args ) {
+                if( ! edd_get_option( sprintf( 'edd_downloads_lists_%s_link', $list ), false ) ) {
+                    unset($lists[$list]);
+                }
+            }
+
+            return $lists;
+        }
+
+        /**
          * Get list args
          *
          * @access      public
