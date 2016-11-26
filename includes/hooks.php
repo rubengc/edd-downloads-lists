@@ -35,7 +35,7 @@ function edd_downloads_lists_query_args( $query ) {
     $not_in = array();
 
     foreach(edd_downloads_lists()->get_lists() as $list => $list_args) {
-        $list_id = edd_downloads_lists_get_user_list_id( $list );
+        $list_id = edd_downloads_lists_get_user_list_id( $list, $query['author'] );
 
         if( $list_id ) {
             $not_in[] = $list_id;
