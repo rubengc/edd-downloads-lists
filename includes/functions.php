@@ -14,7 +14,7 @@ if( !defined( 'ABSPATH' ) ) exit;
  * Returns a user's list ID
  * list will be created if one does not exist
  *
- * @since   1.0
+ * @since   1.0.0
  * @param   $list string        User list, defaults: wish_list|favorite|like|recommend
  * @param   $user_id integer    (Optional) User id
  * @return  integer|boolean     List id|false
@@ -79,7 +79,7 @@ function edd_downloads_lists_get_user_list_id( $list, $user_id = null ) {
  * @param  string $list 	    User list, defaults: wish_list|favorite|like|recommend
  * @param  integer $user_id     (Optional) User id
  * @return array|boolean        Contents of the list|false
- * @since  1.0
+ * @since  1.0.0
  */
 function edd_downloads_lists_get_downloads_list( $list, $user_id = null ) {
     $list_id = edd_downloads_lists_get_user_list_id( $list, $user_id );

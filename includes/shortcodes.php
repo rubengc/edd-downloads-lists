@@ -11,7 +11,7 @@ if( !defined( 'ABSPATH' ) ) exit;
 /**
  * EDD Downloads Lists shortcode
  *
- * @since  1.0
+ * @since  1.0.0
  * @param $atts
  * @param null $content
  * @return mixed|null|void

@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: easy digital downloads, digital, download, downloads, edd, rubengc, list, lists, wish, like, favorite, recommend, wishes, likes, favorites, recommendations, recommendation, widget, widgets, e-commerce
 Requires at least: 4.0
 Tested up to: 4.6
-Stable tag: 1.0.0
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -84,6 +84,9 @@ $list = array(
 == Upgrade Notice ==
 
 == Changelog ==
+
+= 1.0.1 =
+* Fix: Undefined $query['author']
 
 = 1.0 =
 * Initial release

@@ -13,7 +13,7 @@ if( !defined( 'ABSPATH' ) ) exit;
 /**
  * Adds item(s) directly to user list via Ajax
  *
- * @since 1.0
+ * @since 1.0.0
  * @return void
  */
 function edd_downloads_lists_add_to_list() {
@@ -106,7 +106,7 @@ add_action( 'wp_ajax_nopriv_edd_downloads_lists_add_to_list', 'edd_downloads_lis
 /**
  * Imports EDD Favorites lists to EDD Downloads Lists
  *
- * @since 1.0
+ * @since 1.0.1
  * @return void
  */
 function edd_downloads_lists_favorites_import() {

@@ -13,7 +13,7 @@ if( !defined( 'ABSPATH' ) ) exit;
 /**
  * Prevents EDD Downloads Lists count metas be overwritten on EDD FES Draft download approbation process
  *
- * @since   1.0
+ * @since   1.0.0
  * @param   $excluded_metas array   Array with metas to exclude from EDD FES Draft
  * @return  array                   Metas to exclude on draft download approbation
  */
@@ -29,20 +29,26 @@ add_filter( 'edd_fes_draft_approve_download_excluded_metas', 'edd_downloads_list
 /**
  * Hides user lists on [edd_wish_lists]
  *
- * @since  1.0
+ * @since  1.0.1
  */
 function edd_downloads_lists_query_args( $query ) {
     $not_in = array();
 
-    foreach(edd_downloads_lists()->get_lists() as $list => $list_args) {
-        $list_id = edd_downloads_lists_get_user_list_id( $list, $query['author'] );
+    if( isset( $query['author'] ) ) {
+        $user_id = $query['author'];
+    } else {
+        $user_id = null;
+    }
+
+    foreach( edd_downloads_lists()->get_lists() as $list => $list_args ) {
+        $list_id = edd_downloads_lists_get_user_list_id( $list, $user_id );
 
         if( $list_id ) {
             $not_in[] = $list_id;
         }
     }
 
-    if( !empty( $not_in ) ) {
+    if( ! empty( $not_in ) ) {
         $query['post__not_in'] = $not_in;
     }
 

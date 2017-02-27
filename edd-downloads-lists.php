@@ -3,7 +3,7 @@
  * Plugin Name:     EDD Downloads List
  * Plugin URI:      https://wordpress.org/plugins/edd-downloads-lists/
  * Description:     Adds custom lists to EDD Wish Lists
- * Version:         1.0.0
+ * Version:         1.0.1
  * Author:          rubengc
  * Author URI:      http://rubengc.com
  * Text Domain:     edd-downloads-lists
